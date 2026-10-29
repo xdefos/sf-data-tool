@@ -1,0 +1,30 @@
+source_object: Acteur__c
+target_object: Acteur__c
+level: 1
+scope_filter: null
+files: false
+external_id_field: ExtId__c
+external_id_compute:
+  source: Id
+  prefer: ExtId__c
+  prefix: ACTEUR
+fields:
+- source: Name
+  target: Name
+- source: CooperationSPA__c
+  target: CooperationSPA__c
+- source: FrequenceRelations__c
+  target: FrequenceRelations__c
+- source: OrganisationTerritoriale__c
+  target: OrganisationTerritoriale__c
+- source: Role__c
+  target: Role__c
+- source: TypeActeur__c
+  target: TypeActeur__c
+- source: Especes__c
+  target: Especes__c
+lookups:
+- source: Owner.Username
+  target: OwnerId
+  user: true
+  rule: proprietaire resolu par username (mappings/_users.yaml)

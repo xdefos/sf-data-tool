@@ -1,0 +1,124 @@
+source_object: Enquete__c
+target_object: Enquete__c
+level: 4
+scope_filter: null
+files: true
+external_id_field: ExtId__c
+external_id_compute:
+  source: Id
+  prefer: ExtId__c
+  prefix: ENQUETE
+fields:
+- source: Name
+  target: Name
+- source: Adresse__c
+  target: Adresse__c
+- source: CodePostal__c
+  target: CodePostal__c
+- source: Commentaires__c
+  target: Commentaires__c
+- source: Consignes__c
+  target: Consignes__c
+- source: Date1erPassage__c
+  target: Date1erPassage__c
+- source: DateCloture__c
+  target: DateCloture__c
+- source: DateEnvoiDE__c
+  target: DateEnvoiDE__c
+- source: DateSignalement__c
+  target: DateSignalement__c
+- source: FichiersOptimises__c
+  target: FichiersOptimises__c
+- source: OrigineSignalement__c
+  target: OrigineSignalement__c
+- source: Especes__c
+  target: Especes__c
+- source: Issue__c
+  target: Issue__c
+- source: Localite__c
+  target: Localite__c
+- source: NombreAnimauxCedes__c
+  target: NombreAnimauxCedes__c
+- source: NomsAnimaux__c
+  target: NomsAnimaux__c
+- source: NumeroCTS__c
+  target: NumeroCTS__c
+- source: Priorite__c
+  target: Priorite__c
+- source: Signalement__c
+  target: Signalement__c
+- source: Statut__c
+  target: Statut__c
+- source: Ville__c
+  target: Ville__c
+- source: GeolocationCalcul__c
+  target: GeolocationCalcul__c
+- source: Geolocation__Latitude__s
+  target: Geolocation__Latitude__s
+- source: Geolocation__Longitude__s
+  target: Geolocation__Longitude__s
+- source: Number__c
+  target: Number__c
+- source: Acces_COVID__c
+  target: Acces_COVID__c
+- source: ListeEspeces__c
+  target: ListeEspeces__c
+- source: NombreAnimauxCedesTiers__c
+  target: NombreAnimauxCedesTiers__c
+- source: Issues__c
+  target: Issues__c
+- source: NOMPrenomMEC__c
+  target: NOMPrenomMEC__c
+- source: TelephoneMEC__c
+  target: TelephoneMEC__c
+- source: NumeroJuridique__c
+  target: NumeroJuridique__c
+- source: Date2emePassage__c
+  target: Date2emePassage__c
+- source: Date3emePassage__c
+  target: Date3emePassage__c
+- source: Date4emePassage__c
+  target: Date4emePassage__c
+- source: DatePropositionCloture__c
+  target: DatePropositionCloture__c
+- source: Date5emePassage__c
+  target: Date5emePassage__c
+- source: Date6emePassage__c
+  target: Date6emePassage__c
+lookups:
+- source: DelegueEnqueteurBinome__c
+  target: DelegueEnqueteurBinome__c
+  parent_key: delegueenqueteur
+  parent_external_id: ExtId__c
+  relationship_name: DelegueEnqueteurBinome__r
+  prefer: DelegueEnqueteurBinome__r.ExtId__c
+  compute:
+    prefix: DELEGUEENQUETEUR
+- source: DelegueEnqueteurReferent__c
+  target: DelegueEnqueteurReferent__c
+  parent_key: delegueenqueteur
+  parent_external_id: ExtId__c
+  relationship_name: DelegueEnqueteurReferent__r
+  prefer: DelegueEnqueteurReferent__r.ExtId__c
+  compute:
+    prefix: DELEGUEENQUETEUR
+- source: DelegueEnqueteurTrinome__c
+  target: DelegueEnqueteurTrinome__c
+  parent_key: delegueenqueteur
+  parent_external_id: ExtId__c
+  relationship_name: DelegueEnqueteurTrinome__r
+  prefer: DelegueEnqueteurTrinome__r.ExtId__c
+  compute:
+    prefix: DELEGUEENQUETEUR
+- source: SignalementOrigine__c
+  target: SignalementOrigine__c
+  parent_key: signalement
+  parent_external_id: ExtId__c
+  relationship_name: SignalementOrigine__r
+  prefer: SignalementOrigine__r.ExtId__c
+  compute:
+    prefix: SIGNALEMENT
+- source: Owner.Username
+  target: OwnerId
+  user: true
+  rule: proprietaire resolu par username (mappings/_users.yaml)

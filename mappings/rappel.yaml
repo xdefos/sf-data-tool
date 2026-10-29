@@ -1,0 +1,25 @@
+source_object: Rappel__c
+target_object: Rappel__c
+level: 8
+scope_filter: null
+files: false
+external_id_field: Id
+track_target_id: true
+fields:
+- source: Commentaire__c
+  target: Commentaire__c
+- source: DateRappel__c
+  target: DateRappel__c
+lookups:
+- source: Enquete__c
+  target: Enquete__c
+  parent_key: enquete
+  parent_external_id: ExtId__c
+  relationship_name: Enquete__r
+  prefer: Enquete__r.ExtId__c
+  compute:
+    prefix: ENQUETE
+- source: Owner.Username
+  target: OwnerId
+  user: true
+  rule: proprietaire resolu par username (mappings/_users.yaml)

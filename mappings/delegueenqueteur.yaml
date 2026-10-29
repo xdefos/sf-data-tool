@@ -1,0 +1,54 @@
+source_object: DelegueEnqueteur__c
+target_object: DelegueEnqueteur__c
+level: 2
+scope_filter: null
+files: false
+external_id_field: ExtId__c
+external_id_compute:
+  source: Id
+  prefer: ExtId__c
+  prefix: DELEGUEENQUETEUR
+fields:
+- source: Name
+  target: Name
+- source: Adresse__c
+  target: Adresse__c
+- source: AncienDE__c
+  target: AncienDE__c
+- source: EnquetesAnnuel__c
+  target: EnquetesAnnuel__c
+- source: CodePostal__c
+  target: CodePostal__c
+- source: Commentaire__c
+  target: Commentaire__c
+- source: DossierAJour__c
+  target: DossierAJour__c
+- source: Email__c
+  target: Email__c
+- source: EnquetesEnCours__c
+  target: EnquetesEnCours__c
+- source: Telephone__c
+  target: Telephone__c
+- source: EnquetesAnnuelBinome__c
+  target: EnquetesAnnuelBinome__c
+- source: Ville__c
+  target: Ville__c
+- source: GeolocationCalcul__c
+  target: GeolocationCalcul__c
+- source: Geolocation__Latitude__s
+  target: Geolocation__Latitude__s
+- source: Geolocation__Longitude__s
+  target: Geolocation__Longitude__s
+- source: EnquetesEnCoursBinome__c
+  target: EnquetesEnCoursBinome__c
+- source: VPAAnnuel__c
+  target: VPAAnnuel__c
+- source: Habilitation_Enquete__c
+  target: Habilitation_Enquete__c
+- source: Habilitation_VPA__c
+  target: Habilitation_VPA__c
+lookups:
+- source: Owner.Username
+  target: OwnerId
+  user: true
+  rule: proprietaire resolu par username (mappings/_users.yaml)

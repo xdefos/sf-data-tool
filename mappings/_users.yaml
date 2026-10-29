@@ -1,0 +1,5 @@
+# Resolution des utilisateurs (OwnerId) : username source -> username cible.
+# Ordre : map > meme username + suffix > default > omis (proprietaire = utilisateur d'API).
+map: {}
+suffix: ""        # ex. ".dev3" : les sandbox suffixent les usernames
+default: null     # username cible de repli

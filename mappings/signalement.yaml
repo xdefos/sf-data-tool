@@ -1,0 +1,82 @@
+source_object: Signalement__c
+target_object: Signalement__c
+level: 3
+scope_filter: null
+files: true
+external_id_field: ExtId__c
+external_id_compute:
+  source: Id
+  prefer: ExtId__c
+  prefix: SIGNALEMENT
+two_pass: true
+fields:
+- source: Name
+  target: Name
+- source: CodePostal__c
+  target: CodePostal__c
+- source: DateDemandeCERFA__c
+  target: DateDemandeCERFA__c
+- source: DateReception__c
+  target: DateReception__c
+- source: DateSignalement__c
+  target: DateSignalement__c
+- source: DateReceptionCERFA__c
+  target: DateReceptionCERFA__c
+- source: Especes__c
+  target: Especes__c
+- source: Issue__c
+  target: Issue__c
+- source: NumeroCTS__c
+  target: NumeroCTS__c
+- source: NomPrenom__c
+  target: NomPrenom__c
+- source: Ville__c
+  target: Ville__c
+- source: Enjeu__c
+  target: Enjeu__c
+- source: Commentaire__c
+  target: Commentaire__c
+- source: DateRelanceCERFA__c
+  target: DateRelanceCERFA__c
+- source: DateAppelMairie__c
+  target: DateAppelMairie__c
+- source: Telephone__c
+  target: Telephone__c
+- source: NOMPrenomMEC__c
+  target: NOMPrenomMEC__c
+- source: Adresse__c
+  target: Adresse__c
+- source: ListeEspeces__c
+  target: ListeEspeces__c
+- source: TelephoneMEC__c
+  target: TelephoneMEC__c
+- source: Adresse_Signalant__c
+  target: Adresse_Signalant__c
+- source: CodePostal_Signalant__c
+  target: CodePostal_Signalant__c
+- source: Ville_Signalant__c
+  target: Ville_Signalant__c
+- source: Geolocation__Latitude__s
+  target: Geolocation__Latitude__s
+- source: Geolocation__Longitude__s
+  target: Geolocation__Longitude__s
+- source: GeolocationCalcul__c
+  target: GeolocationCalcul__c
+- source: OrigineSignalement__c
+  target: OrigineSignalement__c
+- source: NombreDoublons__c
+  target: NombreDoublons__c
+lookups:
+- source: DoubleDuSignalement__c
+  target: DoubleDuSignalement__c
+  parent_key: signalement
+  parent_external_id: ExtId__c
+  relationship_name: DoubleDuSignalement__r
+  prefer: DoubleDuSignalement__r.ExtId__c
+  compute:
+    prefix: SIGNALEMENT
+  reflexive: true
+- source: Owner.Username
+  target: OwnerId
+  user: true
+  rule: proprietaire resolu par username (mappings/_users.yaml)

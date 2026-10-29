@@ -1,0 +1,12 @@
+# Noms des niveaux (documentation). L'ordre reel vient du champ `level` de chaque mapping,
+# calcule par `sfdata init-mappings` depuis les relations (parents d'abord) et modifiable a la main.
+levels:
+  - {order: 1, name: "Referentiels (acteurs)"}
+  - {order: 2, name: "Delegues enqueteurs"}
+  - {order: 3, name: "Signalements"}
+  - {order: 4, name: "Enquetes"}
+  - {order: 5, name: "Animaux"}
+  - {order: 6, name: "Commentaires"}
+  - {order: 7, name: "Contacts locaux"}
+  - {order: 8, name: "Rappels"}
+  - {order: 9, name: "Visites post-adoption"}

@@ -1,0 +1,45 @@
+source_object: ContactLocal__c
+target_object: ContactLocal__c
+level: 7
+scope_filter: null
+files: false
+external_id_field: Id
+fields:
+- source: Name
+  target: Name
+- source: CodePostal__c
+  target: CodePostal__c
+- source: Coordonnees__c
+  target: Coordonnees__c
+- source: ImplantationLocale__c
+  target: ImplantationLocale__c
+- source: Ville__c
+  target: Ville__c
+- source: Adresse__c
+  target: Adresse__c
+- source: Geolocation__Latitude__s
+  target: Geolocation__Latitude__s
+- source: Geolocation__Longitude__s
+  target: Geolocation__Longitude__s
+- source: GeolocationCalcul__c
+  target: GeolocationCalcul__c
+- source: Commentaires__c
+  target: Commentaires__c
+lookups:
+- source: Acteur__c
+  target: Acteur__c
+  parent_key: acteur
+  parent_external_id: ExtId__c
+  relationship_name: Acteur__r
+  prefer: Acteur__r.ExtId__c
+  compute:
+    prefix: ACTEUR
+- source: ContactDE__c
+  target: ContactDE__c
+  parent_key: delegueenqueteur
+  parent_external_id: ExtId__c
+  relationship_name: ContactDE__r
+  prefer: ContactDE__r.ExtId__c
+  compute:
+    prefix: DELEGUEENQUETEUR
+track_target_id: true

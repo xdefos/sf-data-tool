@@ -1,0 +1,23 @@
+[project]
+name = "sf-data-tool"
+version = "0.2.0"
+description = "Extraction (backup), chargement, purge de donnees Salesforce entre orgs (mappings YAML)"
+requires-python = ">=3.10"
+dependencies = [
+    "simple-salesforce>=1.12.6",
+    "PyYAML>=6.0",
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+sfdata = "sfdata.cli:cli"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["sfdata*"]

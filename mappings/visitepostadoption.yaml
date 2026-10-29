@@ -1,0 +1,106 @@
+source_object: VisitePostAdoption__c
+target_object: VisitePostAdoption__c
+level: 9
+scope_filter: null
+files: true
+external_id_field: ExtId__c
+external_id_compute:
+  source: Id
+  prefer: ExtId__c
+  prefix: VISITEPOSTADOPTION
+fields:
+- source: Name
+  target: Name
+- source: Adresse__c
+  target: Adresse__c
+- source: CodePostal__c
+  target: CodePostal__c
+- source: Commentaires__c
+  target: Commentaires__c
+- source: Consignes__c
+  target: Consignes__c
+- source: DateAdoption__c
+  target: DateAdoption__c
+- source: DateEnvoiDossier__c
+  target: DateEnvoiDossier__c
+- source: DatePassageRealise__c
+  target: DatePassageRealise__c
+- source: DateCloture__c
+  target: DateCloture__c
+- source: Identifiant__c
+  target: Identifiant__c
+- source: NomAnimal__c
+  target: NomAnimal__c
+- source: RefugeMissionne__c
+  target: RefugeMissionne__c
+- source: RefugeOrigine__c
+  target: RefugeOrigine__c
+- source: Statut__c
+  target: Statut__c
+- source: Ville__c
+  target: Ville__c
+- source: Geolocation__Latitude__s
+  target: Geolocation__Latitude__s
+- source: Geolocation__Longitude__s
+  target: Geolocation__Longitude__s
+- source: Espece__c
+  target: Espece__c
+- source: Acces_COVID__c
+  target: Acces_COVID__c
+- source: DatePriseEnCharge__c
+  target: DatePriseEnCharge__c
+- source: NomPrenomAdoptant__c
+  target: NomPrenomAdoptant__c
+- source: Telephone__c
+  target: Telephone__c
+- source: AnimalBonEtat__c
+  target: AnimalBonEtat__c
+- source: AspectTailleCouleur__c
+  target: AspectTailleCouleur__c
+- source: AutresAnimauxContact__c
+  target: AutresAnimauxContact__c
+- source: AvezVousVuAnimal__c
+  target: AvezVousVuAnimal__c
+- source: DateNaissance__c
+  target: DateNaissance__c
+- source: DateDernierRappelVaccin__c
+  target: DateDernierRappelVaccin__c
+- source: EauDisposition__c
+  target: EauDisposition__c
+- source: ModeIdentification__c
+  target: ModeIdentification__c
+- source: AnimalCollier__c
+  target: AnimalCollier__c
+- source: LieuViePrincipal__c
+  target: LieuViePrincipal__c
+- source: Nourriture__c
+  target: Nourriture__c
+- source: NumeroIdentificationAnimal__c
+  target: NumeroIdentificationAnimal__c
+- source: RaceSexe__c
+  target: RaceSexe__c
+- source: VaccinationAJour__c
+  target: VaccinationAJour__c
+- source: AccesExterieur__c
+  target: AccesExterieur__c
+lookups:
+- source: DelegueEnqueteurVPA__c
+  target: DelegueEnqueteurVPA__c
+  parent_key: delegueenqueteur
+  parent_external_id: ExtId__c
+  relationship_name: DelegueEnqueteurVPA__r
+  prefer: DelegueEnqueteurVPA__r.ExtId__c
+  compute:
+    prefix: DELEGUEENQUETEUR
+- source: EnqueteOrigine__c
+  target: EnqueteOrigine__c
+  parent_key: enquete
+  parent_external_id: ExtId__c
+  relationship_name: EnqueteOrigine__r
+  prefer: EnqueteOrigine__r.ExtId__c
+  compute:
+    prefix: ENQUETE
+- source: Owner.Username
+  target: OwnerId
+  user: true
+  rule: proprietaire resolu par username (mappings/_users.yaml)
