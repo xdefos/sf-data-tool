@@ -58,6 +58,36 @@ def _lookup_backfills(target_alias: str, mapping) -> dict:
             for lk in mapping.lookups if lk.backfill_object}
 
 
+def select_with_parents(source, keys, wm_of, opts) -> tuple[dict, dict]:
+    """`--limit N` : N premiers records de chaque objet (graines) + leurs parents requis, recursivement.
+
+    Sans cette fermeture, une trame partielle casse les liens (enquete -> delegue absent de la trame).
+    Retourne ({cle: [records]}, {cle: graines}). Le watermark ne suit que les graines (ordre SystemModstamp).
+    """
+    maps = {k: load_object_mapping(k) for k in keys}
+    seeds, sel = {}, {}
+    for k, m in maps.items():
+        seeds[k] = source.records(m, wm_of(k), opts.where, opts.limit)
+        sel[k] = {r["Id"]: r for r in seeds[k]}
+    order = sorted(maps, key=lambda k: -int(maps[k].level))
+    asked: dict = {k: set() for k in maps}  # ids deja demandes (un parent hors perimetre ne revient jamais)
+    changed = True
+    while changed:
+        changed = False
+        for k in order:
+            for lk in maps[k].lookups:
+                pk = lk.parent_key
+                if lk.user or "." in lk.source or pk not in maps:
+                    continue
+                need = {r.get(lk.source) for r in sel[k].values()} - {None} - set(sel[pk]) - asked[pk]
+                if need:
+                    asked[pk] |= need
+                    for r in source.records_by_ids(maps[pk], need):
+                        sel[pk][r["Id"]] = r
+                    changed = True
+    return {k: list(v.values()) for k, v in sel.items()}, seeds
+
+
 def run(source, sf_target, target_alias: str, opts: RunOptions, user_resolver=None) -> RunResult:
     emit = opts.emit
     run_ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -68,11 +98,22 @@ def run(source, sf_target, target_alias: str, opts: RunOptions, user_resolver=No
     journal.append("run_start", run_ts=run_ts, mode=opts.mode, source=source.alias, target=target_alias,
                    objects=keys, dry_run=opts.dry_run, where=opts.where, limit=opts.limit)
 
+    def wm_of(k):
+        return get_watermark(source.alias, k) if opts.mode == "delta" and not source.is_snapshot else None
+
+    selection = seeds = None
+    if opts.limit:
+        try:
+            selection, seeds = select_with_parents(source, keys, wm_of, opts)
+        except Exception as exc:
+            emit(f"ERREUR extraction : {exc}")
+            res.errors = True
+            keys = []
     for key in keys:
         mapping = load_object_mapping(key)
-        watermark = get_watermark(source.alias, key) if opts.mode == "delta" and not source.is_snapshot else None
+        watermark = wm_of(key)
         try:
-            records = source.records(mapping, watermark, opts.where, opts.limit)
+            records = selection[key] if selection is not None else source.records(mapping, watermark, opts.where, None)
         except Exception as exc:  # erreur SOQL / champ absent de la source : on continue les autres objets
             emit(f"[{key}] ERREUR extraction : {exc}")
             res.errors = True
@@ -113,7 +154,7 @@ def run(source, sf_target, target_alias: str, opts: RunOptions, user_resolver=No
         if obj_error:
             res.errors = True
         elif not source.is_snapshot:
-            wm = max_system_modstamp(records)
+            wm = max_system_modstamp(seeds[key] if seeds is not None else records)
             if wm:
                 set_watermark(source.alias, key, wm)
     if user_resolver is not None:

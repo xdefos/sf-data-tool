@@ -74,6 +74,13 @@ class OrgSource:
     def records(self, mapping, watermark=None, where=None, limit=None):
         return extract(self.sf, mapping, watermark, where, limit)
 
+    def records_by_ids(self, mapping, ids):
+        from sfdata.load import chunks
+        out = []
+        for part in chunks(sorted(ids), 200):
+            out += extract(self.sf, mapping, where="Id IN (" + ",".join(f"'{i}'" for i in part) + ")")
+        return out
+
     def files(self, mapping, source_ids):
         from sfdata.files import fetch_files
         return fetch_files(self.sf, source_ids)

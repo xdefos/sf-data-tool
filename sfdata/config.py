@@ -38,6 +38,8 @@ class FieldMapping:
     anonymize: bool = False      # suffixe applique seulement avec l'anonymisation active (defaut)
     constant: object = None      # valeur fixe ecrite a la place de la source quand la condition est vraie
     truncate_at: int | None = None
+    default: object = None       # valeur ecrite quand la source est vide (champ obligatoire cible)
+    default_unique_base: int | None = None  # idem, entier unique derive de l'Id source (base + base62 des 6 derniers car.)
 
 
 @dataclass

@@ -1,7 +1,7 @@
 source_object: VisitePostAdoption__c
 target_object: VisitePostAdoption__c
 level: 9
-scope_filter: null
+scope_filter: "EnqueteOrigine__c = null OR EnqueteOrigine__r.SignalementOrigine__c != null"
 files: true
 external_id_field: ExtId__c
 external_id_compute:
@@ -13,6 +13,7 @@ fields:
   target: Name
 - source: Adresse__c
   target: Adresse__c
+  default: Adresse non renseignee
 - source: CodePostal__c
   target: CodePostal__c
 - source: Commentaires__c
@@ -29,6 +30,7 @@ fields:
   target: DateCloture__c
 - source: Identifiant__c
   target: Identifiant__c
+  default_unique_base: 9000000000000
 - source: NomAnimal__c
   target: NomAnimal__c
 - source: RefugeMissionne__c

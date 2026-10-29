@@ -113,3 +113,31 @@ def test_ledger_only_created_and_tombstones():
 
 def test_chunks():
     assert [len(c) for c in chunks(list(range(5)), 2)] == [2, 2, 1]
+
+
+def test_select_with_parents_pulls_required_parents_recursively(monkeypatch):
+    from sfdata import runner
+    from sfdata.config import LookupMapping
+    maps = {
+        "sig": mapping(key="sig", level="1"),
+        "enq": mapping(key="enq", level="2", lookups=[LookupMapping(source="Sig__c", target="Sig__c", parent_key="sig")]),
+        "com": mapping(key="com", level="3", lookups=[LookupMapping(source="Enq__c", target="Enq__c", parent_key="enq")]),
+    }
+    data = {"sig": [{"Id": "s1"}, {"Id": "s2"}], "enq": [{"Id": "e1", "Sig__c": "s1"}, {"Id": "e2", "Sig__c": "s2"}],
+            "com": [{"Id": "c1", "Enq__c": "e2"}]}
+
+    class Src:
+        def records(self, m, wm=None, where=None, limit=None):
+            return data[m.key][:limit] if limit else data[m.key]
+
+        def records_by_ids(self, m, ids):
+            return [r for r in data[m.key] if r["Id"] in ids]
+
+    monkeypatch.setattr(runner, "load_object_mapping", lambda k: maps[k])
+
+    class O:
+        where, limit = None, 1
+
+    sel, seeds = runner.select_with_parents(Src(), list(maps), lambda k: None, O())
+    assert {r["Id"] for r in sel["enq"]} == {"e1", "e2"} and {r["Id"] for r in sel["sig"]} == {"s1", "s2"}
+    assert [r["Id"] for r in seeds["enq"]] == ["e1"]

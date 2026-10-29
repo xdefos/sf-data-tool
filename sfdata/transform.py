@@ -110,6 +110,16 @@ def resolve_lookup(record: dict, lk: LookupMapping, ctx: Context) -> dict:
     return {lk.relationship_name or relationship_name(lk.target): {lk.parent_external_id: ext}}
 
 
+_B62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+
+def _base62(text: str) -> int:
+    n = 0
+    for c in text:
+        n = n * 62 + _B62.index(c)
+    return n
+
+
 def transform_record(record: dict, mapping: ObjectMapping, pass_number: int = 1, ctx: Context | None = None) -> dict:
     """Payload d'ecriture.
 
@@ -139,7 +149,11 @@ def transform_record(record: dict, mapping: ObjectMapping, pass_number: int = 1,
             continue
         v = resolve_source_path(record, f.source)
         if v is None:
-            out[f.target] = None
+            if f.default_unique_base is not None:
+                v = f.default_unique_base + _base62(record["Id"][9:15])
+            elif f.default is not None:
+                v = f.default
+            out[f.target] = v
             continue
         if f.drop_values and v in f.drop_values:
             continue

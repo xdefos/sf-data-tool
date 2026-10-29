@@ -1,7 +1,7 @@
 source_object: Commentaire__c
 target_object: Commentaire__c
 level: 6
-scope_filter: null
+scope_filter: "Enquete__r.SignalementOrigine__c != null"
 files: false
 external_id_field: ExtId__c
 external_id_compute:

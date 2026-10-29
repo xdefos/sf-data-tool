@@ -51,6 +51,7 @@ class Plan:
     objects: list = field(default_factory=list)
     ignored: dict = field(default_factory=dict)
     missing_dependents: list = field(default_factory=list)  # (parent_key, enfant_key)
+    unchecked: list = field(default_factory=list)  # relations non interrogeables (a verifier a la main)
     findings: list = field(default_factory=list)
 
     @property
@@ -109,8 +110,12 @@ def build_plan(sf, entries: list[dict], keys: set | None = None, with_dependents
         if op.deletable:
             for rel in child_relationships(sf, sobject):
                 n = 0
-                for part in chunks(op.deletable, CHUNK):
-                    n += sf.query(f"SELECT COUNT() FROM {rel['child']} WHERE {rel['field']} IN ({_in(part)})")["totalSize"]
+                try:
+                    for part in chunks(op.deletable, CHUNK):
+                        n += sf.query(f"SELECT COUNT() FROM {rel['child']} WHERE {rel['field']} IN ({_in(part)})")["totalSize"]
+                except SalesforceError:
+                    plan.unchecked.append(f"{rel['child']}.{rel['field']}")
+                    continue
                 if n:
                     plan.findings.append(Finding(sobject, rel["child"], rel["field"], n, rel["kind"]))
     return plan
@@ -128,6 +133,8 @@ def format_plan(plan: Plan) -> str:
         lines.append(f"  (ignore : {n} {s}, jamais supprimes)")
     for f in plan.findings:
         lines.append(f"  {f.kind.upper():8s} {f.parent} -> {f.child}.{f.field} : {f.count}")
+    if plan.unchecked:
+        lines.append("  Non verifiable (a controler a la main) : " + ", ".join(sorted(set(plan.unchecked))))
     for p, c in plan.missing_dependents:
         lines.append(f"  BLOQUE : {c} depend de {p} et n'est pas selectionne (ajouter {c} ou --with-dependents)")
     return "\n".join(lines)

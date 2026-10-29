@@ -83,6 +83,10 @@ class SnapshotSource:
         recs = [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
         return recs[:limit] if limit else recs
 
+    def records_by_ids(self, mapping, ids):
+        wanted = set(ids)
+        return [r for r in self.records(mapping) if r["Id"] in wanted]
+
     def files(self, mapping, source_ids):
         d = self.path / "files" / mapping.key
         if not (d / "index.json").exists():

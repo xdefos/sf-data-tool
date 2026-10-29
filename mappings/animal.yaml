@@ -1,7 +1,7 @@
 source_object: Animal__c
 target_object: Animal__c
 level: 5
-scope_filter: null
+scope_filter: "Enquete__c = null OR Enquete__r.SignalementOrigine__c != null"
 files: true
 external_id_field: ExtId__c
 external_id_compute:
